@@ -70,14 +70,15 @@ const logPerson = (person: Person) => {
   console.log(` - ${person.name}, ${person.age}, ${information}`);
 }
 
-const filterUsers = (persons: Person[], criteria: any): User[] => {
-  console.log(criteria);
+type Criteri = Admin | User;
+
+const filterUsers = (persons: Person[], criteria: any ): User[] =>
   persons.filter(isUser).filter((user) => {
-      const criteriaKeys = Object.keys(criteria) as (keyof User)[];
-      return criteriaKeys.every((fieldName) => user[fieldName] === criteria[fieldName]);
-  });
-  return [];
-};
+    const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+    console.log(criteriaKeys);
+    criteriaKeys.every((fieldName) => console.log(criteria[fieldName]));
+    return criteriaKeys.every((fieldName) => user[fieldName] === criteria[fieldName]);
+});
 
 
 console.log('Users of age 24:');
@@ -85,6 +86,14 @@ console.log('Users of age 24:');
 filterUsers(
   persons,
   {
-      age: 24
+    name: 'Даня Поперечный',
   }
 ).forEach(logPerson);
+
+// persons.filter(isAdmin).forEach(logPerson);
+// console.log();
+// persons.filter(isUser).forEach(logPerson);
+
+const us =  {
+    name: 'Даня Поперечный',
+  };
