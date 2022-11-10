@@ -26,32 +26,65 @@ const persons: Person[] = [
     name: 'Марат Aляуддинов',
     age: 20,
     group: 'музыкант',
+  },
+  {
+    type: 'user',
+    name: 'Екатерина Попова',
+    age: 24,
+    group: 'дизайнер сайтов'
+  },
+  {
+    type: 'admin',
+    name: 'Аркадий Паравозов',
+    age: 55,
+    role: 'Системный администратор'
+  },
+  {
+    type: 'user',
+    name: 'Даня Поперечный',
+    age: 28,
+    group: 'Комик'
+  },
+  {
+    type: 'admin',
+    name: 'Олег',
+    age: 44,
+    role: 'Модератор'
   }
 ];
 
-const isAdmin = (person: Person): person is Admin => {
-  return person.type === 'admin';
-}
-
-const isUser = (person: Person): person is User => {
-  return person.type === 'user';
-}
+const isAdmin = (person: Person): person is Admin => person.type === 'admin';
+const isUser = (person: Person): person is User => person.type === 'user';
 
 const logPerson = (person: Person) => {
-  let information: string = '';
+  let information = '';
+  
   if (isAdmin(person)) {
     information = person.role;
   }
+  
   if (isUser(person)) {
     information = person.group;
   }
+  
   console.log(` - ${person.name}, ${person.age}, ${information}`);
 }
 
-console.log('Admins:');
-persons.filter(isAdmin).forEach(logPerson);
+const filterUsers = (persons: Person[], criteria: any): User[] => {
+  console.log(criteria);
+  persons.filter(isUser).filter((user) => {
+      const criteriaKeys = Object.keys(criteria) as (keyof User)[];
+      return criteriaKeys.every((fieldName) => user[fieldName] === criteria[fieldName]);
+  });
+  return [];
+};
 
-console.log();
 
-console.log('Users:');
-persons.filter(isUser).forEach(logPerson);
+console.log('Users of age 24:');
+
+filterUsers(
+  persons,
+  {
+      age: 24
+  }
+).forEach(logPerson);
